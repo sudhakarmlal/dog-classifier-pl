@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# PyTorch Lightning logs
+lightning_logs/
+
+# Data
+data/
+
+# Logs
+logs/
+
+# Checkpoints
+*.ckpt
+
+# Predictions
+predictions/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Poetry
+poetry.lock
