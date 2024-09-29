@@ -19,17 +19,18 @@ def train_and_test():
     model = DogClassifier()
 
     # Setup checkpoint callback
-    checkpoint_callback = ModelCheckpoint(
-        dirpath='logs/checkpoints',
-        filename='epoch={epoch}-step={step}',
-        save_top_k=3,
-        monitor='val_loss'
-    )
+    #checkpoint_callback = ModelCheckpoint(
+      #  dirpath='logs/checkpoints',
+       # filename='model_r',
+       # save_top_k=3,
+       # monitor='val_loss'
+    #)
 
     # Setup logger
     tb_logger = TensorBoardLogger('logs', name='dog_classifier')
 
     # Initialize trainer
+    checkpoint_callback = ModelCheckpoint(save_on_train_epoch_end=True,dirpath='/opt/logs/checkpoint',filename="model_tr")
     trainer = Trainer(
         max_epochs=1,
         callbacks=[

@@ -9,7 +9,7 @@ def main():
     datamodule.setup(stage='test')
 
     # Load the best model
-    checkpoint_path = 'logs/checkpoints/epoch=epoch=0-step=step=25-v1.ckpt'
+    checkpoint_path = '/opt/logs/checkpoint/model_tr.ckpt'
     model = DogClassifier.load_from_checkpoint(checkpoint_path)
 
     # Initialize trainer
