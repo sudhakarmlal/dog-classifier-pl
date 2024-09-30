@@ -30,9 +30,9 @@ def train_and_test():
     tb_logger = TensorBoardLogger('logs', name='dog_classifier')
 
     # Initialize trainer
-    checkpoint_callback = ModelCheckpoint(save_on_train_epoch_end=True,dirpath='/opt/logs/checkpoint',filename="model_tr")
+    checkpoint_callback = ModelCheckpoint(save_on_train_epoch_end=True,dirpath='/opt/logs/checkpoint',filename="model_pr")
     trainer = Trainer(
-        max_epochs=1,
+        max_epochs=10,
         callbacks=[
             checkpoint_callback,
             RichProgressBar(),
