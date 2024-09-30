@@ -1,6 +1,6 @@
 import pytest
 import torch
-from src.model.dog_classifier import DogClassifier
+from src.model.dogclassifier import DogClassifier
 
 
 
