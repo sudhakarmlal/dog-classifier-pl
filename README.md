@@ -2,6 +2,11 @@
 
 This project implements a dog breed classifier using PyTorch Lightning. It includes scripts for training, evaluation, and inference, along with utility functions for logging and error handling.
 
+Note:The Colab Notebook for the same is available at:
+
+https://github.com/sudhakarmlal/dog-classifier/blob/main/DogClassifier_PytorchLightning.ipynb
+
+
 ## Table of Contents
 1. [Project Structure](#project-structure)
 2. [Setup](#setup)
@@ -15,8 +20,9 @@ This project implements a dog breed classifier using PyTorch Lightning. It inclu
    - [Logging](#logging)
    - [Task Wrapper](#task-wrapper)
 5. [Running Tests](#running-tests)
-6. [Docker](#docker)
-7. [DevContainer](#devcontainer)
+6. [GitHub Actions](#code-coverage)
+7. [Docker](#docker)
+8. [DevContainer](#devcontainer)
 
 ## Project Structure
 
@@ -52,7 +58,7 @@ dog-classifier-pl/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/dog-classifier-pl.git
+   git clone https://github.com/yourusername/dog-classifier.git
    cd dog-classifier-pl
    ```
 
@@ -93,6 +99,8 @@ To evaluate a trained model, run:
 python src/eval.py --ckpt_path /path/to/checkpoint.ckpt
 ```
 
+
+
 This script will:
 - Load the specified model checkpoint
 - Evaluate the model on the test dataset
@@ -100,56 +108,19 @@ This script will:
 
 The classification report will be saved as `logs/classification_report.txt`.
 
+
+The below is the classification generated out of the evaluation:
+
+
+
+<img src="Images/ClassificationReport.JPG" width="600"/>
+
 ### Inference
 
 To run inference on new images, use:
 
 ```
 python src/infer.py --input_folder /path/to/input/images --output_folder /path/to/output --ckpt_path /path/to/checkpoint.ckpt
-```
-
-This script will:
-- Load the specified model checkpoint
-- Process all images in the input folder
-- Generate predictions for each image
-- Save visualizations of the predictions in the output folder
-
-## Key Components
-
-### Data Module
-
-The `DogDataModule` in `src/datamodules/dog_datamodule.py` handles data loading and preprocessing. It:
-- Downloads and extracts the dataset if not present
-- Applies data augmentation and normalization
-- Creates train, validation, and test data loaders
-
-### Dog Classifier Model
-
-The `DogClassifier` in `src/model/dog_classifier.py` defines the model architecture and training process. It:
-- Uses a pre-trained ResNet18 model from the `timm` library
-- Implements the training, validation, and test steps
-- Configures the optimizer and learning rate scheduler
-
-### Logging
-
-The `setup_logger` function in `src/utils/logging_utils.py` configures logging using Loguru. Logs are saved in the `logs/` directory.
-
-### Task Wrapper
-
-The `task_wrapper` decorator in `src/utils/task_wrapper.py` provides error handling and logging for main functions. It:
-- Logs the start and end of each wrapped function
-- Catches and logs any exceptions that occur during execution
-
-## Running Tests
-
-To run the test suite:
-
-```
-poetry run pytest
-```
-
-This will execute all tests in the `tests/` directory. You can run specific test files or functions using pytest's filtering options.
-ckpt
 ```
 
 This script will:
@@ -218,13 +189,13 @@ To build and run the project using Docker:
 
 1. Build the Docker image:
    ```
-   docker build -t dog-classifier-pl .
+   docker build -t dog-classifier .
    ```
 
 2. Run the container:
    - For training:
      ```
-     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier-pl python src/train.py
+     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier python src/train.py
      ```
    - For evaluation:
      ```
@@ -232,7 +203,7 @@ To build and run the project using Docker:
      ```
    - For inference:
      ```
-     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier-pl python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
+     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
      ```
 
 ## DevContainer
@@ -243,3 +214,5 @@ This project includes a DevContainer configuration for use with Visual Studio Co
 2. Open the project folder in VS Code.
 3. Click the green button in the lower-left corner and select "Reopen in Container".
 4. VS Code will build the DevContainer and provide you with a fully configured development environment.
+
+Within the DevContainer, you can run the training, evaluation, and inference scripts as described in the [Usage](#usage) section.
