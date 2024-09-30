@@ -1,6 +1,8 @@
 import pytest
 import torch
-from model.dog_classifier import DogClassifier
+from src.model.dog_classifier import DogClassifier
+
+
 
 def test_dog_classifier():
     model = DogClassifier(lr=1e-3)
