@@ -1,6 +1,6 @@
 import pytest
 from src.datamodules import dog_datamodule
-from src.datamodules.dog_datamodule import DogDataModule
+from src.datamodules.dogmodule import DogDataModule
 
 
 def test_catdog_datamodule():
