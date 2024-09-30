@@ -149,6 +149,68 @@ poetry run pytest
 ```
 
 This will execute all tests in the `tests/` directory. You can run specific test files or functions using pytest's filtering options.
+ckpt
+```
+
+This script will:
+- Load the specified model checkpoint
+- Process all images in the input folder
+- Generate predictions for each image
+- Save visualizations of the predictions in the output folder ie predictions folder.
+- Sample Image picked from the predictions folder is:
+
+  <img src="predictions/Dachshund_41_prediction.png" width="400"/>
+  
+
+## Key Components
+
+### Data Module
+
+The `DogDataModule` in `src/datamodules/dog_datamodule.py` handles data loading and preprocessing. It:
+- Downloads and extracts the dataset if not present
+- Applies data augmentation and normalization
+- Creates train, validation, and test data loaders
+
+### Dog Classifier Model
+
+The `DogClassifier` in `src/model/dog_classifier.py` defines the model architecture and training process. It:
+- Uses a pre-trained ResNet18 model from the `timm` library
+- Implements the training, validation, and test steps
+- Configures the optimizer and learning rate scheduler
+
+### Logging
+
+The `setup_logger` function in `src/utils/logging_utils.py` configures logging using Loguru. Logs are saved in the `logs/` directory.
+
+### Task Wrapper
+
+The `task_wrapper` decorator in `src/utils/task_wrapper.py` provides error handling and logging for main functions. It:
+- Logs the start and end of each wrapped function
+- Catches and logs any exceptions that occur during execution
+
+## Running Tests
+
+To run the test suite:
+
+```
+poetry run pytest
+```
+
+This will execute all tests in the `tests/` directory. You can run specific test files or functions using pytest's filtering options.
+
+## GitHub Actions and Code Coverage
+For running the GitHub actions the python classes for DataModule and DogClassifier is under under the test directory and CI pipeline is created for the same with integration of code coverage.The below is the code coverage results for the same 
+
+Below is the  screenshot for the test passed for DogClassifier and DogDataModule
+
+
+<img src="Images/DogModuleTestPassed.JPG" width="900"/>
+
+
+
+Also find the screnshot for the code coverage for DogClassifier and DataModule
+
+<img src="Images/CodeCoverageScreenshot.JPG" width="700"/>
 
 ## Docker
 
@@ -156,13 +218,13 @@ To build and run the project using Docker:
 
 1. Build the Docker image:
    ```
-   docker build -t dog-classifier .
+   docker build -t dog-classifier-pl .
    ```
 
 2. Run the container:
    - For training:
      ```
-     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier python src/train.py
+     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier-pl python src/train.py
      ```
    - For evaluation:
      ```
@@ -170,7 +232,7 @@ To build and run the project using Docker:
      ```
    - For inference:
      ```
-     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
+     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier-pl python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
      ```
 
 ## DevContainer
@@ -181,5 +243,3 @@ This project includes a DevContainer configuration for use with Visual Studio Co
 2. Open the project folder in VS Code.
 3. Click the green button in the lower-left corner and select "Reopen in Container".
 4. VS Code will build the DevContainer and provide you with a fully configured development environment.
-
-Within the DevContainer, you can run the training, evaluation, and inference scripts as described in the [Usage](#usage) section.
