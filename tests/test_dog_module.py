@@ -1,5 +1,5 @@
 import pytest
-from src.datamodules.dog_datamodule import DataModule
+from datamodules.dog_datamodule import DataModule
 
 
 def test_catdog_datamodule():
