@@ -58,7 +58,7 @@ dog-classifier-pl/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/dog-classifier.git
+   git clone https://github.com/yourusername/dog-classifier-pl.git
    cd dog-classifier-pl
    ```
 
@@ -189,21 +189,21 @@ To build and run the project using Docker:
 
 1. Build the Docker image:
    ```
-   docker build -t dog-classifier .
+   docker build -t dog-classifier-pl .
    ```
 
 2. Run the container:
    - For training:
      ```
-     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier python src/train.py
+     docker run -v /path/to/data:/app/data -v /path/to/logs:/app/logs dog-classifier-pl python src/train.py
      ```
    - For evaluation:
      ```
-     docker run -v /path/to/logs:/app/logs dog-classifier python src/eval.py --ckpt_path /app/logs/checkpoints/best_model.ckpt
+     docker run -v /path/to/logs:/app/logs dog-classifier-pl python src/eval.py --ckpt_path /app/logs/checkpoints/best_model.ckpt
      ```
    - For inference:
      ```
-     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
+     docker run -v /path/to/input:/app/input -v /path/to/output:/app/output -v /path/to/logs:/app/logs dog-classifier-pl python src/infer.py --input_folder /app/input --output_folder /app/output --ckpt_path /app/logs/checkpoints/best_model.ckpt
      ```
 
 ## DevContainer
