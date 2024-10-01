@@ -1,1 +1,16 @@
+    precision    recall  f1-score   support
 
+            Beagle     0.0357    0.0455    0.0400        22
+           Bulldog     0.1613    0.4545    0.2381        11
+   German_Shepherd     0.6667    0.1000    0.1739        20
+Labrador_Retriever     1.0000    0.1429    0.2500        14
+        Rottweiler     0.0000    0.0000    0.0000        23
+             Boxer     1.0000    0.0556    0.1053        18
+         Dachshund     0.0000    0.0000    0.0000        21
+  Golden_Retriever     0.0000    0.0000    0.0000        23
+            Poodle     0.0000    0.0000    0.0000        21
+ Yorkshire_Terrier     0.1770    0.9524    0.2985        21
+
+          accuracy                         0.1598       194
+         macro avg     0.3041    0.1751    0.1106       194
+      weighted avg     0.2660    0.1598    0.0961       194
