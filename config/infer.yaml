@@ -21,22 +21,30 @@ defaults:
   - debug: null
 
 # task name, determines output directory path
-task_name: "train"
+task_name: "infer"
 
 # tags to help you identify your experiments
 # you can overwrite this in experiment configs
 # overwrite from command line with `python train.py tags="[first_tag, second_tag]"`
-tags: ["dev"]
+tags: ["inference"]
 
 # set False to skip model training
-train: True
+train: False
 
 # evaluate on test set, using best model weights achieved during training
 # lightning chooses best weights based on the metric specified in checkpoint callback
 test: True
 
 # simply provide checkpoint path to resume training
-# ckpt_path: ${paths.checkpoint_dir} 
-ckpt_path: null
+ckpt_path: ${paths.checkpoint_dir}  # This needs to be specified when running the script
+
 # seed for random number generators in pytorch, numpy and python.random
 seed: null
+
+# Hydra will create an output folder for us
+paths:
+  output_dir: ${hydra:runtime.output_dir}
+
+input_folder: ${paths.input_dir}  # This needs to be specified when running the script
+
+output_folder: ${paths.prediction_dir}

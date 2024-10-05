@@ -1,22 +1,36 @@
-import argparse
+import rootutils
+
+# Setup root directory
+root = rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
+
+import hydra
+from omegaconf import DictConfig
 import torch
 from pathlib import Path
 from PIL import Image
 import matplotlib.pyplot as plt
 from torchvision import transforms
-from model.dog_classifier import DogClassifier
-from utils.log_utils import setup_logging
-from utils.task_wrapper import task_wrapper
 from rich.progress import track
+from hydra.utils import instantiate
+from pytorch_lightning import Trainer
+from pytorch_lightning.loggers import Logger
+from pytorch_lightning.callbacks import Callback
+
+from utils.task_wrapper import task_wrapper
+from model.timm_classifier import TimmClassifier  # Added import for TimmClassifier
 
 @task_wrapper
-def infer(input_folder: str, output_folder: str, ckpt_path: str):
-    # Set up logging
-    log_dir = Path("logs")
-    setup_logging()
+def infer(cfg: DictConfig) -> None:
+    # Setup logger
+    logger: Logger = instantiate(cfg.logger)
+
+    # Setup callbacks
+    callbacks: list[Callback] = instantiate(cfg.callbacks)
 
     # Load the model
-    model = DogClassifier.load_from_checkpoint(ckpt_path)
+    #model = TimmClassifier.load_from_checkpoint(cfg.ckpt_path+"/"+"model_hy.ckpt")
+
+    model=TimmClassifier.load_from_checkpoint('/workspace/dog-classifier-pl/logs/train/runs/2024-10-05_03-59-24/csv/version_0/checkpoints/epoch=0-step=13.ckpt')
     model.eval()
 
     # Prepare transforms
@@ -27,11 +41,11 @@ def infer(input_folder: str, output_folder: str, ckpt_path: str):
     ])
 
     # Create output folder if it doesn't exist
-    output_path = Path(output_folder)
+    output_path = Path(cfg.output_folder)
     output_path.mkdir(parents=True, exist_ok=True)
 
     # Get all image files
-    input_path = Path(input_folder)
+    input_path = Path(cfg.input_folder)
     image_files = list(input_path.glob('*.[pj][np][g]'))
 
     # Class labels
@@ -62,11 +76,28 @@ def infer(input_folder: str, output_folder: str, ckpt_path: str):
         plt.savefig(output_file)
         plt.close()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Infer dog breeds from images")
-    parser.add_argument("--input_folder", type=str, required=True, help="Path to the folder containing input images")
-    parser.add_argument("--output_folder", type=str, required=True, help="Path to the folder to save predictions")
-    parser.add_argument("--ckpt_path", type=str, required=True, help="Path to the model checkpoint")
-    args = parser.parse_args()
+        # Log the prediction
+        if hasattr(logger, 'log_metrics'):
+            logger.log_metrics({
+                "predicted_class": predicted_class,
+                "confidence": confidence
+            })
+        else:
+            print("Warning: logger.log_metrics not available. Skipping metric logging.")
+            # Optionally, use a different logging method or just print the metrics
 
-    infer(args.input_folder, args.output_folder, args.ckpt_path)
+    # Finalize the logger
+    if hasattr(logger, 'finalize'):
+        logger.finalize("success")
+    else:
+        # Use a standard logging method instead
+        import logging
+        logging.info("Inference completed successfully")
+
+@hydra.main(version_base=None, config_path="../config", config_name="infer")
+def main(cfg: DictConfig):
+    print(f"Checkpoint path: {cfg.ckpt_path}")
+    infer(cfg)
+
+if __name__ == "__main__":
+    main()

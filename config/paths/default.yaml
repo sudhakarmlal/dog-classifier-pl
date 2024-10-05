@@ -15,5 +15,13 @@ log_dir: ${paths.root_dir}/logs/
 # use it to store all files generated during the run, like ckpts and metrics
 output_dir: ${hydra:runtime.output_dir}
 
+input_dir: ${paths.root_dir}/samples
+
+prediction_dir: ${paths.root_dir}/pred
+
+checkpoint_dir: ${paths.root_dir}/logs/checkpoint
+
+
+
 # path to working directory
 work_dir: ${hydra:runtime.cwd}
