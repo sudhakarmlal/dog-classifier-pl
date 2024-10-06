@@ -16,8 +16,8 @@ from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import Logger
 from pytorch_lightning.callbacks import Callback
 
-from utils.task_wrapper import task_wrapper
-from model.timm_classifier import TimmClassifier  # Added import for TimmClassifier
+from src.utils.task_wrapper import task_wrapper
+from src.model.timm_classifier import TimmClassifier  # Added import for TimmClassifier
 
 @task_wrapper
 def infer(cfg: DictConfig) -> None:
@@ -30,7 +30,7 @@ def infer(cfg: DictConfig) -> None:
     # Load the model
     #model = TimmClassifier.load_from_checkpoint(cfg.ckpt_path+"/"+"model_hy.ckpt")
 
-    model=TimmClassifier.load_from_checkpoint('/workspace/dog-classifier-pl/logs/train/runs/2024-10-05_03-59-24/csv/version_0/checkpoints/epoch=0-step=13.ckpt')
+    model=TimmClassifier.load_from_checkpoint('checkpoint/model_hy.ckpt')
     model.eval()
 
     # Prepare transforms

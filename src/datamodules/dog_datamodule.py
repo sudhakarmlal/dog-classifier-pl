@@ -31,7 +31,7 @@ class DataModule(L.LightningDataModule):
         ])
 
     def setup(self, stage=None):
-        if stage == 'fit' or stage is None:
+        if stage == 'fit' or stage == 'test' or stage == None:
             self._download_and_extract_dataset()
             full_dataset = datasets.ImageFolder(root=self.data_dir + "/dogs_filtered", transform=self.transform)
             n_data = len(full_dataset)

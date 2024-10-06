@@ -1,22 +1,27 @@
 import pytest
-from src.datamodules.dog_datamodule import DataModule
+from hydra.utils import instantiate
 
+def test_datamodule(train_config):
+    try:
+        datamodule = instantiate(train_config.data)
+    except Exception as e:
+        print(f"Full error: {e}")
+        raise
 
-def test_catdog_datamodule():
-    datamodule = DataModule()
+    datamodule.setup()
 
-    # Test prepare_data
-    #datamodule.prepare_data()
+    assert len(datamodule.train_dataset) > 0
+    assert len(datamodule.val_dataset) > 0
+    assert len(datamodule.test_dataset) > 0
 
-    # Test setup
-    datamodule.setup(stage='test')
-
-    # Test dataloaders
     train_loader = datamodule.train_dataloader()
-    #val_loader = datamodule.val_dataloader()
+    val_loader = datamodule.val_dataloader()
     test_loader = datamodule.test_dataloader()
 
-    # Add assertions to check if the dataloaders are correctly set up
     assert len(train_loader) > 0
-    #assert len(val_loader) > 0
+    assert len(val_loader) > 0
     assert len(test_loader) > 0
+
+    batch = next(iter(train_loader))
+    assert len(batch) == 2  # (images, labels)
+    assert batch[0].shape[1:] == (3, 224, 224)  # (batch_size, channels, height, width)

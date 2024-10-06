@@ -1,6 +1,8 @@
-from typing import List
+import sys
 import os
-from utils import log_utils
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from typing import List
+from src.utils import log_utils
 
 # Setup root directory
 from pathlib import Path
@@ -13,8 +15,9 @@ from omegaconf import DictConfig
 from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import Logger
 from pytorch_lightning.callbacks import Callback
+from pytorch_lightning.callbacks import ModelCheckpoint
 import rootutils
-from utils.log_utils import setup_logger, task_wrapper, logger, log_metrics_table
+from src.utils.log_utils import setup_logger, task_wrapper, logger, log_metrics_table
 
 
 
@@ -22,9 +25,15 @@ from utils.log_utils import setup_logger, task_wrapper, logger, log_metrics_tabl
 #os.environ["PYTHONPATH"] = str(root)
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 
+#from pathlib import Path
+#Path("").mkdir(parents=True, exist_ok=True)
+
 def instantiate_callbacks(cfg: DictConfig) -> List[Callback]:
     callbacks: List[Callback] = []
-
+    
+    
+    checkpoint_callback = ModelCheckpoint(save_on_train_epoch_end=True,dirpath='checkpoint',filename="model_hy")
+    callbacks.append(checkpoint_callback)
     if "callbacks" in cfg:
         for _, cb_conf in cfg.callbacks.items():
             if "_target_" in cb_conf:
@@ -81,6 +90,8 @@ def main(cfg: DictConfig):
     if cfg.get("train"):
         logger.info("Starting training!")
         trainer.fit(model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path"))
+         
+
         logger.info("Training completed!")
         logger.info(f"Train metrics:\n{trainer.callback_metrics}")
 

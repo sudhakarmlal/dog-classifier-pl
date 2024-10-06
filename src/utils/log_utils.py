@@ -22,7 +22,7 @@ def visualize_model(model):
 def setup_logging():
     log_folder = "logs"
     os.makedirs(log_folder, exist_ok=True)
-    log_file = os.path.join(log_folder, "dog_classifier.log")
+    log_file = os.path.join(log_folder, "model.log")
     
     logger.remove()  # Remove default handler
     logger.add(sys.stderr, format="{time} {level} {message}", level="INFO")
