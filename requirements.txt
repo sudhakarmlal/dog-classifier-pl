@@ -8,6 +8,7 @@ scikit-learn
 gdown
 scipy
 pandas
+hydra-core
 # --------- model zoo -------#
 timm==1.0.9
 # transformers
