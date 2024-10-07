@@ -24,4 +24,7 @@ pytest          # tests
 black
 pytest-cov
 loguru
+
+hydra-colorlog
+rootutils>=1.0.7
 # sh            # for running bash commands in some tests (linux/macos only)
